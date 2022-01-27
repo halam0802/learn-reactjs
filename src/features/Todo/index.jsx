@@ -1,68 +1,23 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import TodoList from './components/TodoList';
+import React from 'react';
+import DetailPage from './pages/DetailPage';
+import ListPage from './pages/ListPage';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
+
 
 TodoFeature.propTypes = {
 
 };
 
 function TodoFeature(props) {
-    const initTodoList = [
-        {
-            id: 1,
-            title: 'Eat',
-            status: 'new'
-        },
-        {
-            id: 2,
-            title: 'Sleep',
-            status: 'completed'
-        },
-        {
-            id: 3,
-            title: 'Code',
-            status: 'new'
-        }
-    ];
-
-    const [todoList, setTodoList] = useState(initTodoList);
-    const [filteredStatus, setFilteredStatus] = useState('all');
-
-    const handleTodoClick = (todo, idx) => {
-        const newTodoList = [...todoList];
-
-        console.log(todo, idx);
-
-        newTodoList[idx] = {
-            ...newTodoList[idx],
-            status: newTodoList[idx].status === 'new' ? 'completed' : 'new',
-        }
-
-        setTodoList(newTodoList);
-    }
-
-    const handleShowAllClick = () => {
-        setFilteredStatus('all');
-    }
-
-    const handleShowCompletedClick = () => {
-        setFilteredStatus('completed');
-    }
-
-    const handleShowNewClick = () => {
-        setFilteredStatus('new');
-    }
-
-    const renderedTodoList = todoList.filter(todo => filteredStatus === 'all' || filteredStatus === todo.status);
-
+    const match = useRouteMatch();
     return (
         <div>
-            <h3>Todo List</h3>
-            <TodoList todoList={renderedTodoList} onTodoClick={handleTodoClick}></TodoList>
-
-            <button onClick={handleShowAllClick}>Show ALL</button>
-            <button onClick={handleShowCompletedClick}>Show Completed</button>
-            <button onClick={handleShowNewClick}>Show New</button>
+            123
+           
+            <Switch>
+                <Route path={match.path} component={ListPage} exact></Route>
+                <Route path={`${match.path}/:todoId`} component={DetailPage}></Route>
+            </Switch>
         </div>
     );
 }
